@@ -13,17 +13,18 @@ namespace FuncionalHealthChallenge.Models
 
         [Column("titular")]
         [Required(ErrorMessage = "Obrigatório informar um Titular")]
-        public Usuario Titular { get; set; }
+        [DataType("int")]
+        public int TitularId { get; set; }
 
         [Column("numero")]
         [Required(ErrorMessage = "Obrigatório informar o número da conta")]
         [DataType("int")]
-        public int Numero { get; }
+        public int Numero { get; set; }
 
         [Column("agencia")]
         [Required(ErrorMessage = "Obrigatório informar o número da agencia")]
         [DataType("int")]
-        public int Agencia { get; }
+        public int Agencia { get; set; }
 
         private decimal _saldo;
 
@@ -66,13 +67,14 @@ namespace FuncionalHealthChallenge.Models
             }
 
 
-            Titular = titular;
+
+            TitularId = titular.Id;
             Agencia = numeroAgencia;
             Numero = numeroConta;
         }
 
 
-        public void Sacar(decimal valor)
+        public virtual void Sacar(decimal valor)
         {
             if (valor < 0)
             {

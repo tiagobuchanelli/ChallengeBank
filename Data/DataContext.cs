@@ -14,6 +14,8 @@ namespace FuncionalHealthChallenge.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<ContaCorrente> ContasCorrentes { get; set; }
 
+        public DbSet<OperacoesFinanceirasContaCorrente> OperacoesFinanceirasContasCorrentes { get; set; }
+
     }
 
 }
