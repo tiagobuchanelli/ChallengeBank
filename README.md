@@ -43,7 +43,7 @@ Comandos Docker
 
 Insomnia
 - Utilizado Insomnia para testar as requisições da API.
-- Caso ocorrer erros referente a certificados, desabilitar a opção **Validate certificates** nas configurações do aplicativo.
+- Caso ocorrer erros referente a certificados, desabilitar a opção "**Validate certificates**" nas configurações do aplicativo.
 
 ## Teste Requisições (Demo):
 ```c#
