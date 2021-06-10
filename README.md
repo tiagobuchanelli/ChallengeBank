@@ -39,9 +39,14 @@ ORM
 - Utilizado Entity Framework
 
 Docker
-- Baixar a imagem de docker Hub => docker pull tiagobuchanelli/dockerapi:mytag
-- Executar o container: docker run -p 8080:80 tiagobuchanelli/dockerapi:mytag
-
+- Baixar a imagem do Docker Hub
+```c#
+docker pull tiagobuchanelli/dockerapi:mytag
+```
+- Executar o container: 
+```c#
+docker run -p 8080:80 tiagobuchanelli/dockerapi:mytag
+```
 ```c#
 Comandos Docker
 - Gerar Imagem de acordo com Dockerfile: docker build -t tiagobuchanelli/dockerapi . 
