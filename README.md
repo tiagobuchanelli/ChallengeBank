@@ -54,10 +54,12 @@ JSON:
 	"nome": "Fabiana",
 	"CPF": "01782863000"
 }
+```
 
-Resultado:
-======IMAGEM AQUI
+Resultado:<br>
+![CriarUsuario](https://user-images.githubusercontent.com/7735662/121569847-9f33a880-c9f7-11eb-96ed-c4d05ca2fc62.png)
 
+```c#
 - Criar Conta Corrente
 URL: http://localhost:8080/v1/conta-corrente
 JSON:
@@ -66,10 +68,11 @@ JSON:
 	"Agencia": 87878,
 	"Numero": 454545
 }
+```
+Resultado:<br>
+![CriarContaCorrente](https://user-images.githubusercontent.com/7735662/121569843-9d69e500-c9f7-11eb-8814-468f7fa9fff5.png)
 
-Resultado:
-=======IMAGEM AQUI
-
+```c#
 - Realizar Depósito
 URL: http://localhost:8080/v1/conta-corrente/depositar
 JSON:
@@ -77,11 +80,11 @@ JSON:
 	"Valor": 900.00,
 	"Numero": 454545
 }
+```
+Resultado:<br>
+![RealizarDeposito](https://user-images.githubusercontent.com/7735662/121569852-a1960280-c9f7-11eb-8c2d-b13bc4f04af6.png)
 
-Resultado:
-====imagem aqui
-
-
+```c#
 - Realizar Saque
 URL: http://localhost:8080/v1/conta-corrente/sacar
 JSON:
@@ -89,17 +92,18 @@ JSON:
 	"Valor": 200.00,
 	"Numero": 454545
 }
+```
+Resultado:<br>
+![RealizarSaque](https://user-images.githubusercontent.com/7735662/121569857-a35fc600-c9f7-11eb-927b-4d0ac48e640e.png)
 
-Resultado:
-====imagem aqui
-
+```c#
 - Consultar Saldo
 URL: http://localhost:8080/v1/conta-corrente/saldo/454545
+```
+Resultado:<br>
+![consultarSaldo](https://user-images.githubusercontent.com/7735662/121569839-9b078b00-c9f7-11eb-8e5d-40df620f8cd0.png)
 
-Resultado:
-====imagem aqui
-
-
+```c#
 - Outras Consultas:
 URL: http://localhost:8080/v1/usuarios
 URL: http://localhost:8080/v1/conta-corrente
