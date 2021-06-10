@@ -33,11 +33,20 @@ Docker
 - Baixar a imagem de docker Hub => docker pull tiagobuchanelli/dockerapi:mytag
 - Executar o container: docker run -p 8080:80 tiagobuchanelli/dockerapi:mytag
 
+```c#
+Comandos Docker
+- Gerar Imagem de acordo com Dockerfile: docker build -t tiagobuchanelli/dockerapi . 
+- Executar Container: docker run -p 8080:80 tiagobuchanelli/dockerapi
+- Visualizar imagens criadas: docker images
+- Visualizar containers: docker container ps -a
+```
+
 Insomnia
 - Utilizado Insomnia para testar as requisições da API.
 - Caso ocorrer de referente a certificados, desabilitar a opção **Validate certificates** nas configurações do aplicativo.
 
 ## Teste Requisições (Demo):
+```c#
 - Criar Usuários
 URL: http://localhost:8080/v1/usuarios
 JSON: 
@@ -95,6 +104,9 @@ Resultado:
 URL: http://localhost:8080/v1/usuarios
 URL: http://localhost:8080/v1/conta-corrente
 
+```
 
 ## RESTAURAR PROJETO:
+```c#
 - gh repo clone tiagobuchanelli/FuncionalHealthChallenge
+```
