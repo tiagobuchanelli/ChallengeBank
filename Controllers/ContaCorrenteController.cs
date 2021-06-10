@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FuncionalHealthChallenge.Data;
 using FuncionalHealthChallenge.Models;
+using FuncionalHealthChallenge.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,13 +17,27 @@ namespace FuncionalHealthChallenge.Controllers
         [Route("")]
         public async Task<ActionResult<List<ContaCorrente>>> Get([FromServices] DataContext context)
         {
-            var contasCorrentes = await context.ContasCorrentes.AsNoTracking().ToListAsync();
 
-            if (contasCorrentes.Count == 0)
+            try
             {
-                return Ok("Nenhuma conta corrente encontrada!");
+                var contaCRepo = new ContaCorrenteRepository(context);
+                var contasCorrentes = await contaCRepo.GetContasCorrentes();
+                return contasCorrentes;
+
             }
-            return contasCorrentes;
+            catch (ArgumentException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (NullReferenceException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Não foi possível recuperar as contas correntes: Erro: " + e.Message });
+            }
+
         }
 
         //Recuperar Saldo
@@ -32,16 +47,27 @@ namespace FuncionalHealthChallenge.Controllers
             int id,
             [FromServices] DataContext context)
         {
-            var contaCorrente = await context
-            .ContasCorrentes
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Numero == id);
-
-            if (contaCorrente == null)
+            try
             {
-                return Ok("Nenhuma conta corrente encontrada!");
+                var contaCRepo = new ContaCorrenteRepository(context);
+                var contaCorrente = await contaCRepo.SaldoContaCorrente(id);
+                return Ok("Saldo da Conta: " + contaCorrente);
+
             }
-            return Ok("Saldo da Conta: " + contaCorrente.Saldo);
+            catch (ArgumentException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (NullReferenceException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Não foi possível recuperar o saldo: Erro: " + e.Message });
+            }
+
+
         }
 
 
@@ -59,31 +85,9 @@ namespace FuncionalHealthChallenge.Controllers
 
             try
             {
-                //verificar se a conta corrente já existe
-                var contaCheck = await context
-                .ContasCorrentes
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Numero == model.Numero);
-
-                if (contaCheck != null)
-                    return BadRequest("Conta já cadastrada : " + contaCheck.Numero);
-
-
-                //Recuperar dados do titular 
-                var titular = await context
-                .Usuarios
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == model.TitularId);
-
-                if (titular == null)
-                    return BadRequest("Usuário não cadastrado");
-
-
-                //criar nova conta corrente  
-                ContaCorrente conta = new ContaCorrente(titular, model.Agencia, model.Numero);
-                context.ContasCorrentes.Add(conta);
-                await context.SaveChangesAsync();
-                return conta;
+                var contaCRepo = new ContaCorrenteRepository(context);
+                var contaCorrente = await contaCRepo.SetConta(model);
+                return contaCorrente;
 
             }
             catch (ArgumentException e)
@@ -116,27 +120,61 @@ namespace FuncionalHealthChallenge.Controllers
             try
             {
 
-                //verificar se a conta corrente já existe
-                var conta = await context
-                .ContasCorrentes
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Numero == model.Numero);
+                var contaCRepo = new ContaCorrenteRepository(context);
+                var deposito = await contaCRepo.DepositarConta(model);
+                return Ok("Conta: " + deposito.Numero + " Saldo: " + deposito.Saldo);
 
-                if (conta == null)
-                    return BadRequest("Conta Corrente não existente");
-
-
-                //realizar deposito
-                conta.Depositar(model.Valor);
-                context.Entry<ContaCorrente>(conta).State = EntityState.Modified;
-                await context.SaveChangesAsync();
-                return conta;
-
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (NullReferenceException e)
+            {
+                return BadRequest(new { message = e.Message });
             }
 
             catch (Exception e)
             {
-                return BadRequest(new { message = "Não foi possível criar a conta corrente: Erro: " + e.Message });
+                return BadRequest(new { message = "Não foi possível realizar a transação: Erro: " + e.Message });
+            }
+        }
+
+
+
+        //sacar na conta corrente
+        [HttpPut]
+        [Route("sacar")]
+        public async Task<ActionResult<ContaCorrente>> PutSacar(
+            [FromServices] DataContext context,
+            [FromBody] OperacoesFinanceirasContaCorrente model
+        )
+        {
+            //validar model
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+
+                var contaCRepo = new ContaCorrenteRepository(context);
+                var saque = await contaCRepo.SacarConta(model);
+                return Ok("Conta: " + saque.Numero + " Saldo: " + saque.Saldo);
+                ;
+
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (NullReferenceException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+
+            catch (Exception e)
+            {
+                return BadRequest(new { message = "Não foi possível realizar a transação: Erro: " + e.Message });
             }
         }
 

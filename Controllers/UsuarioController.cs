@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FuncionalHealthChallenge.Data;
 using FuncionalHealthChallenge.Models;
+using FuncionalHealthChallenge.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +12,14 @@ namespace FuncionalHealthChallenge.Controllers
     [Route("v1/usuarios")]
     public class UsuarioController : Controller
     {
+
         //recuperar usuarios
         [HttpGet]
         [Route("")]
         public async Task<ActionResult<List<Usuario>>> Get([FromServices] DataContext context)
         {
-            var users = await context.Usuarios.AsNoTracking().ToListAsync();
+            var userRepo = new UsuarioRepository(context);
+            var users = await userRepo.GetUsuarios();
 
             if (users.Count == 0)
             {
@@ -34,6 +37,7 @@ namespace FuncionalHealthChallenge.Controllers
             [FromBody] Usuario model
         )
         {
+
             //validar model
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -41,6 +45,8 @@ namespace FuncionalHealthChallenge.Controllers
 
             try
             {
+                var userRepo = new UsuarioRepository(context);
+
                 //verificar se usuário ja existe - CPF
                 var usuariocheck = await context
                 .Usuarios
@@ -52,10 +58,17 @@ namespace FuncionalHealthChallenge.Controllers
 
                 //criar novo usuário
                 Usuario usuario = new Usuario(model.Nome, model.CPF);
-                context.Usuarios.Add(usuario);
-                await context.SaveChangesAsync();
+                await userRepo.SetUsuario(usuario);
                 return usuario;
 
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (NullReferenceException e)
+            {
+                return BadRequest(new { message = e.Message });
             }
             catch (Exception e)
             {
