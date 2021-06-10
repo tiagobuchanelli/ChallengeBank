@@ -37,7 +37,7 @@ Insomnia
 - Utilizado Insomnia para testar as requisições da API.
 - Caso ocorrer de referente a certificados, desabilitar a opção **Validate certificates** nas configurações do aplicativo.
 
-## Testando Requisições (Demo):
+## Teste Requisições (Demo):
 - Criar Usuários
 URL: http://localhost:8080/v1/usuarios
 JSON: 
