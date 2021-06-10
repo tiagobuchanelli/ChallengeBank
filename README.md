@@ -29,6 +29,15 @@ ENTÃO a query retornará o saldo atualizado.
 
 
 ## Execuçaõ do Projeto
+Banco de Dados
+- Criado a aplicação e executado com o banco de dados em memória
+```c#
+- Banco de Dados em Memoria --- dotnet add package Microsoft.EntityFrameworkCore.InMemory
+```
+
+ORM
+- Utilizado Entity Framework
+
 Docker
 - Baixar a imagem de docker Hub => docker pull tiagobuchanelli/dockerapi:mytag
 - Executar o container: docker run -p 8080:80 tiagobuchanelli/dockerapi:mytag
