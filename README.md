@@ -119,8 +119,8 @@ Resultado:<br>
 
 ```c#
 - Outras Consultas:
-URL: http://localhost:8080/v1/usuarios
-URL: http://localhost:8080/v1/conta-corrente
+[GET] URL: http://localhost:8080/v1/usuarios
+[GET] URL: http://localhost:8080/v1/conta-corrente
 
 ```
 
