@@ -1,4 +1,4 @@
-## FUNCIONALTECH CHALLENGE
+## Desenvolver uma API em C# com .NET Core
 
 ## Objetivo
 Desenvolver uma API em C# com .NET Core que simule algumas funcionalidades de um banco digital.
